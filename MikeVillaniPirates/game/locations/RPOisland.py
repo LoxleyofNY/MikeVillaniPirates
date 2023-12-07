@@ -27,8 +27,9 @@ class RPOIsland(location.Location):
         self.locations["southBeach"] = SouthBeach(self)
         self.locations["eastBeach"] = EastBeach(self)
         self.locations["westBeach"] = WestBeach(self)
-
-        self.locations["portal"] = Portal(self)
+        self.locations["bluePortal"] = Portal(self)
+        
+        
     def enter (self, ship):
         print ("You've sailed to a island that looks empty, or atleast it seems like it.")
 
@@ -72,7 +73,7 @@ class Dock (location.SubLocation):
 class Portal (location.SubLocation): #player needs to be able to go to this location and play the games/challenges
     def __init__ (self,m):
         super().__init__(m)
-        self.name = "portal"
+        self.name = "bluePortal"
         self.verbs["FirstKey"] = self
         self.verbs["SecondKey"] = self
         self.verbs["ThirdKey"] = self
@@ -90,11 +91,18 @@ class Portal (location.SubLocation): #player needs to be able to go to this loca
     "In the dance of Rock, Paper, Scissors, discover the First Key. Unravel the secrets of language in Classic Hangman to claim the Second Key. Embrace the intuitive dance of a guessing game for the last\n."
 
     "These challenges are your gateway to untold knowledge. Traverse the digital expanse, decipher the puzzles, and may the keys unveil themselves to those who tread the path of insight.\n" 
-    "Commence your quest, and may the OASIS yield its treasures to the clever and the wise.")
+    "Commence your quest, and may the OASIS yield its treasures to the clever and the wise.\n"
+    "Enter (First/Second/Third) To start a challenge")
         announce(greeting)
 
 
         
+    class GoldenEgg(Item):
+        def __init__ (self):
+            super().__init__("Golden Egg", 10000)
+            self.name = "golden_egg"
+            self.description = "Easter Egg prophecy egg"
+            
     def process_verb (self, verb, cmd_list, nouns):
             if (verb == "return"):
                 announce ("You return to the ship.")
@@ -106,9 +114,17 @@ class Portal (location.SubLocation): #player needs to be able to go to this loca
             if (verb == "Second"):
                 keyHandling.SecondKey(self)
             if (verb == "Third"):
-                keyHandling.ThirdKey(self)    
+                keyHandling.ThirdKey(self)
                 
+            # elif (verb == "unlock"):
+            #         for item in config.the_player.inventory:
+            #             if item.name == "copper_key" and "jade_key" and "crystal_key":
+            #                 config.the_player.inventory.pop(item.name)
+            #                 config.the_player.add_to_inventory([GoldenEgg()])
+            #                 break
+                        
             
+
 class WestBeach (location.SubLocation):
     def __init__ (self, m):
         super().__init__(m)
