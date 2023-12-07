@@ -68,7 +68,7 @@ class Rock_Paper_Scissors:
                     self.rpc = False
 
                 play_again = input("Do you want to play again? (yes/no): ")
-                if play_again != 'yes':
+                if play_again != 'yes'or "y":
                     break
 
                 self.round_number += 1
@@ -77,7 +77,7 @@ class Rock_Paper_Scissors:
             print(
                 "Hail, triumphant one! Thrice victorious in the mystical game of rock, paper, scissors - a magic trinity! \n"
                 "Remember, the number three holds a secret enchantment. As you journey forth, await its unexpected power. Three is the key to a destiny woven in magic!")
-            config.the_player.add_to_inventory([self.CopperKey()])
+            config.the_player.add_to_inventory([CopperKey()])
             print("Copper Key has been added to inventory!")
             print("Token: 01110110 01101001 01101100 001101100 01100001 01101110 01101001")
             #Return to portal with wizard
@@ -183,7 +183,7 @@ class Hangman:
 
             if self.gameWon2 == True:
                 print("Well done, astute seeker! The riddles have yielded to your wizardry. Remember the author's discontent for future endeavors, and may your journey be ever enchanted.")
-                #config.the_player.add_to_inventory([JadeKey()])
+                config.the_player.add_to_inventory([JadeKey()])
                 print("Jade Key has been added to inventory!")
                 print("Author: Stephen King")
                 #Return to portal with wizard
@@ -273,20 +273,25 @@ class GuessingGame:
                 result = self.checkGuess(self.user_number)
                 self.guessNoHints(result)    
 
-def FirstKey(self): #RPC to Binary Win 3x in row     
-    class CopperKey (Item):
+def firstkey(self): #RPC to Binary Win 3x in row     
+    game = Rock_Paper_Scissors()
+    game.playGame()
+     
+def secondkey(self): #hangman for Shining
+    game = Hangman()
+    game.playGame()
+     
+def thirdkey(self):#Guessing Game answer ultimate
+    game = GuessingGame() #makes a new game
+    game.playGame() #words containing (dot) . a reading right to left, and . is read "this part"
+        
+class CopperKey (Item):
         def __init__ (self):
             super().__init__("Copper Key", 333)
             self.name = "copper_key"
             self.description = "The worn, ancient copper key, bearing the scars of countless adventures, whispers tales of bygone eras and long-lost secrets."
             self.inscription = ("A creator who hates his own creation.\n")
-
-    if __name__ == "__main__":
-        game = Rock_Paper_Scissors()
-        game.playGame()
-     
-def SecondKey(self): #hangman for Shining
-    class JadeKey (Item):
+class JadeKey (Item):
             def __init__ (self):
                 super().__init__("Jade Key", 237)
                 self.name = "jade_key"
@@ -296,13 +301,7 @@ def SecondKey(self): #hangman for Shining
 "divide it by the number magic\n"
 
 "and what you, need, want and desire will be found in the fortress tragic.\n")
-    #Should create a Hangman instance, play it, and then give the player the key if they win.
-    if __name__ == "__main__":
-        game = Hangman()
-        game.playGame()
-     
-def ThirdKey(self):#Guessing Game answer ultimate
-    class CrystalKey (Item):
+class CrystalKey (Item):
             def __init__ (self):
                 super().__init__("Crystal Key", 42)
                 self.name = "crystal_key"
@@ -316,9 +315,7 @@ def ThirdKey(self):#Guessing Game answer ultimate
 "And, seeker, as jest and wisdom align,\n"
 "I hope thou hast been paying attention fine!")
                 
-    if __name__ == "__main__":
-        game = GuessingGame() #makes a new game
-        game.playGame() #words containing (dot) . a reading right to left, and . is read "this part"
+    
  
     
     

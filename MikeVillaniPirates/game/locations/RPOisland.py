@@ -46,6 +46,9 @@ class Dock (location.SubLocation):
         self.verbs['south'] = self
         self.verbs['east'] = self
         self.verbs['west'] = self
+        self.verbs['enter'] = self
+        self.verbs['test'] = self
+
 
         self.verbs['portal'] = self
                 
@@ -56,8 +59,10 @@ class Dock (location.SubLocation):
             config.the_player.visiting = False
         elif (verb == "east" or verb == "west" or verb == "north" or verb == "south"):
             config.the_player.next_loc = self.main_location.locations[f"{verb}Beach"]
-        elif (verb == 'portal'):
-            config.the_player.next_loc = self.main_location.locations["portal"]
+        elif (len(cmd_list) >= 2 and cmd_list[0] == 'enter' and cmd_list[1] == 'portal'):
+            config.the_player.next_loc = self.main_location.locations["bluePortal"]
+            config.the_player.go = True
+
     
     def enter (self):
         announce ("The dock is empty, just a wooden bridge sitting still in the water and land. \n" +
@@ -74,34 +79,27 @@ class Portal (location.SubLocation): #player needs to be able to go to this loca
     def __init__ (self,m):
         super().__init__(m)
         self.name = "bluePortal"
-        self.verbs["FirstKey"] = self
-        self.verbs["SecondKey"] = self
-        self.verbs["ThirdKey"] = self
+        self.verbs["first"] = self
+        self.verbs["second"] = self
+        self.verbs["third"] = self
       
     def enter (self):
         description =  ("A grand ancient wizard is draped in starlit robes, with a flowing silver beard that whispers of eons past. His eyes, pools of ancient wisdom, hold the secrets of countless realms.\n"
-               "A gnarled staff, etched with cosmic runes, anchors the magic that resonates with each step.\n "
+               "A gnarled staff, etched with cosmic runes, anchors the magic that resonates with each step."
                "Adorned in celestial symbols, he stands, a living bridge between the arcane and the timeless, a brief glimpse into the vast expanse of cosmic knowledge.\n"
-               "He begins to speak")
+               "-------------He begins to speak-------------")
         announce(description)
         
-        greeting = ("Greetings, seeker of the OASIS. Anorak the All-Knowing extends a subtle challenge that dances within the realms of wit and wisdom.\n"
+        greeting = ("Anorak, the all knowing:\n Greetings, seeker of the OASIS. I am Anorak the all-knowing. I've created a quest for those looking for a challenge, and a prize.\n"
               "Three keys lie veiled, each guarded by clever trials woven into the fabric of our digital world.\n"
 
-    "In the dance of Rock, Paper, Scissors, discover the First Key. Unravel the secrets of language in Classic Hangman to claim the Second Key. Embrace the intuitive dance of a guessing game for the last\n."
+    "In the dance of Rock, Paper, Scissors, discover the First Key. Unravel the secrets of language in Hangman to claim the Second Key. Embrace the intuitive dance of a guessing game for the last\n."
 
     "These challenges are your gateway to untold knowledge. Traverse the digital expanse, decipher the puzzles, and may the keys unveil themselves to those who tread the path of insight.\n" 
     "Commence your quest, and may the OASIS yield its treasures to the clever and the wise.\n"
-    "Enter (First/Second/Third) To start a challenge")
-        announce(greeting)
-
-
+    "Enter (First/Second/Third) To start a challenge:")
+        print(greeting)
         
-    class GoldenEgg(Item):
-        def __init__ (self):
-            super().__init__("Golden Egg", 10000)
-            self.name = "golden_egg"
-            self.description = "Easter Egg prophecy egg"
             
     def process_verb (self, verb, cmd_list, nouns):
             if (verb == "return"):
@@ -109,21 +107,26 @@ class Portal (location.SubLocation): #player needs to be able to go to this loca
                 config.the_player.next_loc = config.the_player.ship
                 config.the_player.visiting = False
                 
-            if (verb == "First"):
-                keyHandling.FirstKey(self)
-            if (verb == "Second"):
-                keyHandling.SecondKey(self)
-            if (verb == "Third"):
-                keyHandling.ThirdKey(self)
+            if (verb == "first"):
+                keyHandling.firstkey(self)
+            if (verb == "second"):
+                keyHandling.secondkey(self)
+            if (verb == "third"):
+                keyHandling.thirdkey(self)
                 
-            # elif (verb == "unlock"):
-            #         for item in config.the_player.inventory:
-            #             if item.name == "copper_key" and "jade_key" and "crystal_key":
-            #                 config.the_player.inventory.pop(item.name)
-            #                 config.the_player.add_to_inventory([GoldenEgg()])
-            #                 break
+            elif (verb == "unlock"):
+                    for item in config.the_player.inventory:
+                        if item.name == "copper_key" and "jade_key" and "crystal_key":
+                            config.the_player.inventory.pop(item.name)
+                            config.the_player.add_to_inventory([GoldenEgg()])
+                            break
                         
             
+class GoldenEgg(Item):
+            def __init__ (self):
+                super().__init__("Golden Egg", 10000)
+                self.name = "golden_egg"
+                self.description = "The Prohencies Easter Egg"
 
 class WestBeach (location.SubLocation):
     def __init__ (self, m):
@@ -258,7 +261,8 @@ class EastBeach (location.SubLocation): #handles the scroll
         if (verb == "east"):
             config.the_player.next_loc = self.main_location.locations["northBeach"]
         if (verb == "portal"):
-            config.the_player.next_loc = self.main_location.locations["portal"]
+            config.the_player.next_loc = self.main_location.locations["bluePortal"]
+            config.the_player.go = True
             
 class RPO_Scroll (Item):
     def __init__ (self):
